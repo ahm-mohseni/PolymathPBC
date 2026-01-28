@@ -1,12 +1,14 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, ChevronDown, Cpu, Sparkles, Brain, ArrowRight } from 'lucide-react'
+import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react'
+
+type DropdownKey = 'research' | 'safety' | 'contact' | 'getStarted'
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [popoverOpen, setPopoverOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<DropdownKey | null>(null)
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
@@ -17,32 +19,106 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (key: DropdownKey) => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current)
       closeTimeoutRef.current = null
     }
-    setPopoverOpen(true)
+    setOpenDropdown(key)
   }
 
   const handleMouseLeave = () => {
     closeTimeoutRef.current = setTimeout(() => {
-      setPopoverOpen(false)
+      setOpenDropdown(null)
     }, 300)
   }
 
-  const navLinks = [
-    { href: '/research', label: 'AI Research' },
-    { href: '/product', label: 'Polymath UHP' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
-  ]
+  const navDropdowns = {
+    research: {
+      label: 'AI Research',
+      items: [
+        { href: '/research/publications', label: 'Publications', description: 'Academic papers and research' },
+        { href: '/research/blog', label: 'Blog', description: 'Latest insights and updates' },
+        { href: '/research/benchmarks', label: 'Benchmarks', description: 'Performance metrics' },
+      ]
+    },
+    safety: {
+      label: 'AI Safety',
+      items: [
+        { href: '/safety/ethics', label: 'Ethics', description: 'Our ethical AI principles' },
+        { href: '/safety/privacy', label: 'Privacy', description: 'Data protection practices' },
+        { href: '/safety/security', label: 'Security', description: 'Security protocols' },
+      ]
+    },
+    contact: {
+      label: 'Contact',
+      items: [
+        { href: '/contact/demo', label: 'Demo', description: 'Request a product demo' },
+        { href: '/contact/careers', label: 'Careers', description: 'Join our team' },
+        { href: '/contact/press', label: 'Press', description: 'Media inquiries' },
+      ]
+    },
+  }
 
   const products = [
-    { href: '/api', label: 'API Platform', description: 'Build with our healthcare AI APIs', icon: Cpu },
-    { href: '/primer', label: 'Primer 4.0', description: 'Advanced clinical language model', icon: Sparkles },
-    { href: '/polymath', label: 'Polymath 3.1', description: 'General-purpose medical reasoning', icon: Brain },
+    { href: '/api', label: 'API Platform', description: 'Build with our healthcare AI APIs' },
+    { href: '/primer', label: 'Primer 4.0', description: 'Advanced clinical language model' },
+    { href: '/polymath', label: 'Polymath 3.1', description: 'General-purpose medical reasoning' },
   ]
+
+  const NavDropdown = ({ dropdownKey, align = 'left' }: { dropdownKey: keyof typeof navDropdowns; align?: 'left' | 'right' }) => {
+    const dropdown = navDropdowns[dropdownKey]
+    const isOpen = openDropdown === dropdownKey
+
+    return (
+      <div
+        className="relative"
+        onMouseEnter={() => handleMouseEnter(dropdownKey)}
+        onMouseLeave={handleMouseLeave}
+      >
+        <button
+          className={`inline-flex items-center gap-1 font-body text-sm tracking-wide transition-colors duration-300 ${
+            scrolled
+              ? 'text-muted-gray hover:text-charcoal'
+              : 'text-off-white/70 hover:text-off-white'
+          }`}
+        >
+          {dropdown.label}
+          <ChevronDown size={14} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
+
+        <div
+          className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} mt-3 w-56 rounded-2xl overflow-hidden transition-all duration-300 ${
+            isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'
+          }`}
+          style={{
+            background: 'rgba(255, 255, 255, 0.85)',
+            backdropFilter: 'blur(24px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08)',
+          }}
+        >
+          <div className="p-1.5">
+            {dropdown.items.map((item, index) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`block px-3.5 py-2.5 rounded-xl transition-all duration-200 group/item hover:bg-black/[0.08] ${
+                  index !== dropdown.items.length - 1 ? 'mb-0.5' : ''
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-body font-semibold text-charcoal text-[13px]">{item.label}</span>
+                  <ArrowRight size={12} className="text-charcoal/40 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" />
+                </div>
+                <div className="font-body text-[12px] text-charcoal/70 mt-0.5 leading-snug">{item.description}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <nav
@@ -68,24 +144,27 @@ export default function Navigation() {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`relative font-body text-sm tracking-wide transition-colors duration-300 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:transition-all after:duration-300 hover:after:w-full ${
-                scrolled
-                  ? 'text-muted-gray hover:text-charcoal after:bg-charcoal'
-                  : 'text-off-white/70 hover:text-off-white after:bg-off-white'
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
+        <div className="hidden md:flex items-center gap-8">
+          <NavDropdown dropdownKey="research" />
+
+          <a
+            href="/product"
+            className={`font-body text-sm tracking-wide transition-colors duration-300 ${
+              scrolled
+                ? 'text-muted-gray hover:text-charcoal'
+                : 'text-off-white/70 hover:text-off-white'
+            }`}
+          >
+            Polymath UHP
+          </a>
+
+          <NavDropdown dropdownKey="safety" />
+          <NavDropdown dropdownKey="contact" />
+
           {/* Get Started Popover */}
           <div
             className="relative"
-            onMouseEnter={handleMouseEnter}
+            onMouseEnter={() => handleMouseEnter('getStarted')}
             onMouseLeave={handleMouseLeave}
           >
             <button
@@ -96,35 +175,34 @@ export default function Navigation() {
               }`}
             >
               Get Started
-              <ChevronDown size={14} className={`transition-transform duration-200 ${popoverOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown size={14} className={`transition-transform duration-200 ${openDropdown === 'getStarted' ? 'rotate-180' : ''}`} />
             </button>
 
-            {/* Popover */}
             <div
-              className={`absolute top-full right-0 mt-3 w-80 bg-white rounded-2xl shadow-xl border border-border-gray overflow-hidden transition-all duration-300 ${
-                popoverOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'
+              className={`absolute top-full right-0 mt-3 w-64 rounded-2xl overflow-hidden transition-all duration-300 ${
+                openDropdown === 'getStarted' ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'
               }`}
+              style={{
+                background: 'rgba(255, 255, 255, 0.85)',
+                backdropFilter: 'blur(24px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08)',
+              }}
             >
-              {/* Arrow */}
-              <div className="absolute -top-2 right-6 w-4 h-4 bg-white border-l border-t border-border-gray rotate-45" />
-
-              <div className="relative bg-white rounded-2xl p-2">
-                {products.map((product) => (
+              <div className="p-1.5">
+                {products.map((product, index) => (
                   <a
                     key={product.href}
                     href={product.href}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-subtle-gray transition-all duration-200 group/item"
+                    className={`block px-3.5 py-2.5 rounded-xl transition-all duration-200 group/item hover:bg-black/[0.08] ${
+                      index !== products.length - 1 ? 'mb-0.5' : ''
+                    }`}
                   >
-                    <div className="w-10 h-10 rounded-lg bg-light-amber/50 flex items-center justify-center flex-shrink-0 group-hover/item:bg-bronze/20 transition-colors">
-                      <product.icon size={20} className="text-bronze" />
+                    <div className="flex items-center justify-between">
+                      <span className="font-body font-semibold text-charcoal text-[13px]">{product.label}</span>
+                      <ArrowRight size={12} className="text-charcoal/40 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-body font-semibold text-charcoal text-sm">{product.label}</span>
-                        <ArrowRight size={12} className="text-muted-gray opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" />
-                      </div>
-                      <div className="font-body text-small text-muted-gray mt-0.5">{product.description}</div>
-                    </div>
+                    <div className="font-body text-[12px] text-charcoal/70 mt-0.5 leading-snug">{product.description}</div>
                   </a>
                 ))}
               </div>
@@ -146,40 +224,85 @@ export default function Navigation() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-off-white border-b border-border-gray shadow-lg transition-all duration-300 ${
+        className={`md:hidden absolute top-full left-0 right-0 bg-off-white border-b border-border-gray shadow-lg transition-all duration-300 max-h-[80vh] overflow-y-auto ${
           isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
         <div className="container-custom py-6 flex flex-col gap-1">
-          {navLinks.map((link, index) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="font-body text-lg text-charcoal py-3 px-4 rounded-lg hover:bg-subtle-gray transition-colors"
-              onClick={() => setIsOpen(false)}
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="pt-4 mt-2 border-t border-border-gray">
-            <p className="font-body text-small text-muted-gray uppercase tracking-wider mb-3 px-4">
+          {/* AI Research Section */}
+          <div className="mb-3">
+            <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-1.5 px-4">
+              AI Research
+            </p>
+            {navDropdowns.research.items.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="block py-2.5 px-4 rounded-xl hover:bg-black/[0.05] transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="font-body font-semibold text-charcoal text-[15px]">{item.label}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* Polymath UHP */}
+          <a
+            href="/product"
+            className="font-body font-semibold text-charcoal text-[15px] py-2.5 px-4 rounded-xl hover:bg-black/[0.05] transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            Polymath UHP
+          </a>
+
+          {/* AI Safety Section */}
+          <div className="mb-3 mt-4">
+            <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-1.5 px-4">
+              AI Safety
+            </p>
+            {navDropdowns.safety.items.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="block py-2.5 px-4 rounded-xl hover:bg-black/[0.05] transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="font-body font-semibold text-charcoal text-[15px]">{item.label}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* Contact Section */}
+          <div className="mb-3 mt-4">
+            <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-1.5 px-4">
+              Contact
+            </p>
+            {navDropdowns.contact.items.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="block py-2.5 px-4 rounded-xl hover:bg-black/[0.05] transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="font-body font-semibold text-charcoal text-[15px]">{item.label}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* Get Started Section */}
+          <div className="pt-4 mt-3 border-t border-black/[0.08]">
+            <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-2 px-4">
               Get Started
             </p>
             {products.map((product) => (
               <a
                 key={product.href}
                 href={product.href}
-                className="flex items-start gap-3 py-3 px-4 rounded-lg hover:bg-subtle-gray transition-colors"
+                className="block py-3 px-4 rounded-xl hover:bg-black/[0.05] transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                <div className="w-10 h-10 rounded-lg bg-light-amber/50 flex items-center justify-center flex-shrink-0">
-                  <product.icon size={20} className="text-bronze" />
-                </div>
-                <div>
-                  <div className="font-body font-medium text-charcoal">{product.label}</div>
-                  <div className="font-body text-small text-muted-gray">{product.description}</div>
-                </div>
+                <div className="font-body font-semibold text-charcoal text-[15px]">{product.label}</div>
+                <div className="font-body text-[13px] text-charcoal/70 mt-0.5">{product.description}</div>
               </a>
             ))}
           </div>
