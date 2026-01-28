@@ -146,7 +146,7 @@ export default function Navigation() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-off-white/98 backdrop-blur-md border-b border-border-gray shadow-lg transition-all duration-300 ${
+        className={`md:hidden absolute top-full left-0 right-0 bg-off-white border-b border-border-gray shadow-lg transition-all duration-300 ${
           isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
