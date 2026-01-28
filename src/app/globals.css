@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-off-white text-charcoal font-body antialiased;
+  }
+
+  h1, h2, h3 {
+    @apply font-heading;
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-charcoal text-off-white px-6 py-3 rounded-button font-body font-medium
+           transition-all duration-default hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border border-border-gray text-charcoal px-6 py-3 rounded-button font-body font-medium
+           transition-all duration-default hover:bg-subtle-gray;
+  }
+
+  .card {
+    @apply bg-white border border-border-gray rounded-card p-6 md:p-8
+           transition-all duration-default hover:border-focus-ring hover:shadow-sm;
+  }
+
+  .section-padding {
+    @apply py-section-mobile md:py-section-tablet lg:py-section-desktop;
+  }
+
+  .container-custom {
+    @apply max-w-container mx-auto px-5 md:px-10 lg:px-12;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-1 { animation-delay: 100ms; }
+  .stagger-2 { animation-delay: 200ms; }
+  .stagger-3 { animation-delay: 300ms; }
+  .stagger-4 { animation-delay: 400ms; }
+}
