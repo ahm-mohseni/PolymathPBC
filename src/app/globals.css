@@ -7,10 +7,12 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overscroll-behavior: none;
   }
 
   body {
     @apply bg-off-white text-charcoal font-body antialiased;
+    overscroll-behavior: none;
   }
 
   h1, h2, h3 {
@@ -76,4 +78,79 @@
   .stagger-2 { animation-delay: 200ms; }
   .stagger-3 { animation-delay: 300ms; }
   .stagger-4 { animation-delay: 400ms; }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-15px) rotate(2deg);
+    }
+  }
+
+  .animate-draw {
+    animation: fadeInScale 1.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Editorial Hero - Staggered line animations */
+  .animate-line {
+    animation: lineReveal 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .animate-line-1 { animation-delay: 200ms; }
+  .animate-line-2 { animation-delay: 400ms; }
+  .animate-line-3 { animation-delay: 600ms; }
+
+  @keyframes lineReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Film grain overlay */
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Stat item animation */
+  .animate-stat {
+    animation: statReveal 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  .animate-stat-1 { animation-delay: 800ms; }
+  .animate-stat-2 { animation-delay: 950ms; }
+  .animate-stat-3 { animation-delay: 1100ms; }
+
+  @keyframes statReveal {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 }

@@ -5,21 +5,15 @@ import { ArrowRight, FlaskConical, Play } from 'lucide-react'
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ filter: 'saturate(0.7)' }}
-      >
-        <source src="/hero-bg.mp4" type="video/mp4" />
-      </video>
+      {/* Image Background */}
+      <div
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/hero-bg.jpg)' }}
+      />
 
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/85 to-charcoal/60" />
-      <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-transparent to-charcoal/80" />
+      <div className="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/70 to-charcoal/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-charcoal/60 via-transparent to-charcoal/70" />
 
       {/* Film grain overlay */}
       <div className="grain-overlay" />
