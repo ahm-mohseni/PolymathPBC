@@ -24,7 +24,7 @@ export default function Hero() {
 
           {/* Subheadline */}
           <p className="font-body text-lg md:text-large text-off-white/80 mb-8 max-w-2xl animate-slide-up" style={{ animationDelay: '100ms' }}>
-            Not a search engine. Not a chatbot. <span className="text-bronze">38 domain-specific reasoning engines</span> built for clinical decision-making—from differential diagnosis to treatment protocols.
+            <span className="text-bronze">38 domain-specific reasoning engines</span> built for clinical decision-making—from differential diagnosis to treatment protocols.
           </p>
 
           {/* CTAs */}
