@@ -82,14 +82,14 @@ export default function Navigation() {
   const uhpMenu = {
     features: [
       { href: '/product/reasoning-engine', label: 'Reasoning Models', description: 'Clinical decision support', icon: SparklesIcon },
-      { href: '/product/agentic-assistant', label: 'AI Assistant', description: 'Meet Emory', icon: CpuChipIcon },
+      { href: '/product/agentic-assistant', label: 'Clinic OS', description: 'Meet Emory', icon: CpuChipIcon },
       { href: '/product/clinical-researcher', label: 'Clinical Research', description: 'Over 40 Million Articles', icon: MagnifyingGlassIcon },
       { href: '/product/medvision', label: 'MedVision', description: 'Image Analysis Model', icon: EyeIcon },
       { href: '/product/patient-query', label: 'Patient Analysis', description: 'Patient insights', icon: ChatBubbleLeftRightIcon },
       { href: '/product/encounters', label: 'Encounters', description: 'A Universal EHR', icon: ClipboardDocumentListIcon },
       { href: '/product/transcribe', label: 'Transcribe', description: 'Real-time transcription', icon: MicrophoneIcon },
       { href: '/product/telehealth', label: 'Telehealth for All', description: 'Virtual care', icon: VideoCameraIcon },
-      { href: '/product/communications', label: 'Patient Communications', description: 'Secure messaging', icon: ChatBubbleLeftRightIcon },
+      { href: '/product/communications', label: 'Communicate Safely', description: 'Secure messaging', icon: ChatBubbleLeftRightIcon },
       { href: '/product/autodoc', label: 'AutoDoc', description: 'AI documentation', icon: DocumentTextIcon },
     ] as { href: string; label: string; description: string; icon: HeroIcon }[],
     useCases: [
@@ -280,7 +280,7 @@ export default function Navigation() {
                           <item.icon className="w-5 h-5 text-bronze/80 flex-shrink-0 mt-0.5" />
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2">
-                              <span className="font-body font-semibold text-charcoal text-[14px] leading-tight">{item.label}</span>
+                              <span className="font-body font-semibold text-charcoal text-[13px] leading-tight">{item.label}</span>
                               <ArrowRight size={14} className="text-charcoal/30 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200 flex-shrink-0" />
                             </div>
                             <span className="font-body text-[12px] text-charcoal/50 leading-tight">{item.description}</span>
@@ -305,7 +305,7 @@ export default function Navigation() {
                           <item.icon className="w-5 h-5 text-bronze/80 flex-shrink-0 mt-0.5" />
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2">
-                              <span className="font-body font-semibold text-charcoal text-[14px] leading-tight">{item.label}</span>
+                              <span className="font-body font-semibold text-charcoal text-[13px] leading-tight">{item.label}</span>
                               <ArrowRight size={14} className="text-charcoal/30 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200 flex-shrink-0" />
                             </div>
                             <span className="font-body text-[12px] text-charcoal/50 leading-tight">{item.description}</span>
