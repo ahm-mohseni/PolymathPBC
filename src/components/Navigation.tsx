@@ -1,9 +1,22 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, ComponentType, SVGProps } from 'react'
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react'
+import {
+  SparklesIcon,
+  MagnifyingGlassIcon,
+  DocumentTextIcon,
+  ClipboardDocumentListIcon,
+  MicrophoneIcon,
+  EyeIcon,
+  VideoCameraIcon,
+  ChatBubbleLeftRightIcon,
+  CpuChipIcon,
+} from '@heroicons/react/24/solid'
 
-type DropdownKey = 'research' | 'safety' | 'contact' | 'getStarted'
+type HeroIcon = ComponentType<SVGProps<SVGSVGElement>>
+
+type DropdownKey = 'research' | 'safety' | 'contact' | 'getStarted' | 'uhp'
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -66,6 +79,27 @@ export default function Navigation() {
     { href: '/polymath', label: 'Polymath 3.1', description: 'General-purpose medical reasoning' },
   ]
 
+  const uhpMenu = {
+    features: [
+      { href: '/product/reasoning-engine', label: 'Reasoning Models', description: 'Clinical decision support', icon: SparklesIcon },
+      { href: '/product/agentic-assistant', label: 'AI Assistant', description: 'Meet Emory', icon: CpuChipIcon },
+      { href: '/product/clinical-researcher', label: 'Clinical Research', description: 'Over 40 Million Articles', icon: MagnifyingGlassIcon },
+      { href: '/product/medvision', label: 'MedVision', description: 'Image Analysis Model', icon: EyeIcon },
+      { href: '/product/patient-query', label: 'Patient Analysis', description: 'Patient insights', icon: ChatBubbleLeftRightIcon },
+      { href: '/product/encounters', label: 'Encounters', description: 'A Universal EHR', icon: ClipboardDocumentListIcon },
+      { href: '/product/transcribe', label: 'Transcribe', description: 'Real-time transcription', icon: MicrophoneIcon },
+      { href: '/product/telehealth', label: 'Telehealth for All', description: 'Virtual care', icon: VideoCameraIcon },
+      { href: '/product/communications', label: 'Patient Communications', description: 'Secure messaging', icon: ChatBubbleLeftRightIcon },
+      { href: '/product/autodoc', label: 'AutoDoc', description: 'AI documentation', icon: DocumentTextIcon },
+    ] as { href: string; label: string; description: string; icon: HeroIcon }[],
+    useCases: [
+      { href: '/use-cases/physicians', label: 'For Physicians' },
+      { href: '/use-cases/hospitals', label: 'For Hospitals' },
+      { href: '/use-cases/researchers', label: 'For Researchers' },
+      { href: '/use-cases/educators', label: 'For Educators' },
+    ]
+  }
+
   const NavDropdown = ({ dropdownKey, align = 'left' }: { dropdownKey: keyof typeof navDropdowns; align?: 'left' | 'right' }) => {
     const dropdown = navDropdowns[dropdownKey]
     const isOpen = openDropdown === dropdownKey
@@ -92,7 +126,7 @@ export default function Navigation() {
             isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'
           }`}
           style={{
-            background: 'rgba(255, 255, 255, 0.85)',
+            background: 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(24px) saturate(180%)',
             WebkitBackdropFilter: 'blur(24px) saturate(180%)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08)',
@@ -144,19 +178,25 @@ export default function Navigation() {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-8 relative">
           <NavDropdown dropdownKey="research" />
 
-          <a
-            href="/product"
-            className={`font-body text-sm tracking-wide transition-colors duration-300 ${
-              scrolled
-                ? 'text-muted-gray hover:text-charcoal'
-                : 'text-off-white/70 hover:text-off-white'
-            }`}
+          {/* Polymath UHP Mega Menu */}
+          <div
+            onMouseEnter={() => handleMouseEnter('uhp')}
+            onMouseLeave={handleMouseLeave}
           >
-            Polymath UHP
-          </a>
+            <button
+              className={`inline-flex items-center gap-1 font-body text-sm tracking-wide transition-colors duration-300 ${
+                scrolled
+                  ? 'text-muted-gray hover:text-charcoal'
+                  : 'text-off-white/70 hover:text-off-white'
+              }`}
+            >
+              Polymath UHP
+              <ChevronDown size={14} className={`transition-transform duration-200 ${openDropdown === 'uhp' ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
 
           <NavDropdown dropdownKey="safety" />
           <NavDropdown dropdownKey="contact" />
@@ -183,7 +223,7 @@ export default function Navigation() {
                 openDropdown === 'getStarted' ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'
               }`}
               style={{
-                background: 'rgba(255, 255, 255, 0.85)',
+                background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(24px) saturate(180%)',
                 WebkitBackdropFilter: 'blur(24px) saturate(180%)',
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08)',
@@ -208,6 +248,104 @@ export default function Navigation() {
               </div>
             </div>
           </div>
+
+          {/* Mega Menu Panel - positioned to align with Get Started button */}
+          <div
+            className={`absolute top-full right-0 mt-3 w-[720px] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden transition-all duration-300 ${
+              openDropdown === 'uhp' ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'
+            }`}
+            style={{
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(24px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08)',
+            }}
+            onMouseEnter={() => handleMouseEnter('uhp')}
+            onMouseLeave={handleMouseLeave}
+          >
+              <div className="p-5">
+                <div className="grid grid-cols-3 gap-6">
+                  {/* Column 1: Features 1-4 */}
+                  <div>
+                    <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-3 px-1">
+                      Features
+                    </p>
+                    <div className="space-y-1">
+                      {uhpMenu.features.slice(0, 5).map((item) => (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          className="flex items-start gap-3 px-3 py-2 rounded-xl transition-all duration-200 group/item hover:bg-black/[0.06]"
+                        >
+                          <item.icon className="w-5 h-5 text-bronze/80 flex-shrink-0 mt-0.5" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="font-body font-semibold text-charcoal text-[14px] leading-tight">{item.label}</span>
+                              <ArrowRight size={14} className="text-charcoal/30 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200 flex-shrink-0" />
+                            </div>
+                            <span className="font-body text-[12px] text-charcoal/50 leading-tight">{item.description}</span>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Column 2: Features 5-9 */}
+                  <div>
+                    <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-3 px-1">
+                      &nbsp;
+                    </p>
+                    <div className="space-y-1">
+                      {uhpMenu.features.slice(5).map((item) => (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          className="flex items-start gap-3 px-3 py-2 rounded-xl transition-all duration-200 group/item hover:bg-black/[0.06]"
+                        >
+                          <item.icon className="w-5 h-5 text-bronze/80 flex-shrink-0 mt-0.5" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="font-body font-semibold text-charcoal text-[14px] leading-tight">{item.label}</span>
+                              <ArrowRight size={14} className="text-charcoal/30 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200 flex-shrink-0" />
+                            </div>
+                            <span className="font-body text-[12px] text-charcoal/50 leading-tight">{item.description}</span>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Column 3: Use Cases (large font, no descriptions) */}
+                  <div className="flex flex-col border-l border-black/[0.06] pl-6">
+                    <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-3 px-1">
+                      Use Cases
+                    </p>
+                    <div className="space-y-2 flex-1">
+                      {uhpMenu.useCases.map((item) => (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          className="block px-3 py-2 rounded-xl transition-all duration-200 group/item hover:bg-black/[0.08]"
+                        >
+                          <span className="font-body font-semibold text-charcoal text-[18px]">{item.label}</span>
+                        </a>
+                      ))}
+                    </div>
+
+                    {/* Try Now CTA */}
+                    <div className="mt-4 pt-4 border-t border-black/[0.06]">
+                      <a
+                        href="/request-access"
+                        className="inline-flex items-center justify-center gap-2 w-full bg-charcoal text-off-white px-5 py-2.5 rounded-full font-body text-sm font-medium transition-all duration-300 hover:bg-charcoal/90"
+                      >
+                        Try Now
+                        <ArrowRight size={14} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -246,14 +384,53 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* Polymath UHP */}
-          <a
-            href="/product"
-            className="font-body font-semibold text-charcoal text-[15px] py-2.5 px-4 rounded-xl hover:bg-black/[0.05] transition-colors"
-            onClick={() => setIsOpen(false)}
-          >
-            Polymath UHP
-          </a>
+          {/* Polymath UHP Section */}
+          <div className="mb-3 mt-4">
+            <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-1.5 px-4">
+              Polymath UHP - Features
+            </p>
+            {uhpMenu.features.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="flex items-start gap-3 py-2.5 px-4 rounded-xl hover:bg-black/[0.05] transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                <item.icon className="w-[18px] h-[18px] text-bronze flex-shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-body font-semibold text-charcoal text-[15px] block">{item.label}</span>
+                  <span className="font-body text-[13px] text-charcoal/60">{item.description}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* Polymath UHP Use Cases */}
+          <div className="mb-3 mt-4">
+            <p className="font-body text-[11px] text-charcoal/50 uppercase tracking-wider font-medium mb-1.5 px-4">
+              Polymath UHP - Use Cases
+            </p>
+            {uhpMenu.useCases.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="block py-2.5 px-4 rounded-xl hover:bg-black/[0.05] transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="font-body font-semibold text-charcoal text-[17px]">{item.label}</span>
+              </a>
+            ))}
+
+            {/* Try Now CTA in Mobile */}
+            <a
+              href="/request-access"
+              className="flex items-center justify-center gap-2 mx-4 mt-4 bg-charcoal text-off-white px-5 py-3 rounded-full font-body text-sm font-medium"
+              onClick={() => setIsOpen(false)}
+            >
+              Try Now
+              <ArrowRight size={14} />
+            </a>
+          </div>
 
           {/* AI Safety Section */}
           <div className="mb-3 mt-4">
