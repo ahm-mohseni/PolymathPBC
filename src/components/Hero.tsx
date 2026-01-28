@@ -1,64 +1,130 @@
-import { ArrowRight, FlaskConical } from 'lucide-react'
+'use client'
+
+import { ArrowRight, FlaskConical, Play } from 'lucide-react'
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-b from-charcoal via-warm-stone to-charcoal overflow-hidden">
-      {/* Decorative amber blur */}
-      <div className="absolute top-1/4 -right-32 w-96 h-96 bg-amber-dark/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 -left-32 w-80 h-80 bg-amber-dark/15 rounded-full blur-3xl" />
+    <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Video Background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ filter: 'saturate(0.7)' }}
+      >
+        <source src="/hero-bg.mp4" type="video/mp4" />
+      </video>
 
-      <div className="container-custom relative z-10 pt-20">
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Left column - content */}
-          <div>
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-light-amber/10 border border-bronze/30 rounded-full px-4 py-2 mb-8 animate-fade-in">
-              <FlaskConical size={16} className="text-bronze" />
-              <span className="font-body text-small text-light-amber">
-                Research-First Healthcare AI
-              </span>
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/85 to-charcoal/60" />
+      <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-transparent to-charcoal/80" />
+
+      {/* Film grain overlay */}
+      <div className="grain-overlay" />
+
+      {/* Asclepius - Large background watermark */}
+      <div className="absolute inset-y-0 right-0 w-1/2 flex items-center justify-end overflow-hidden pointer-events-none">
+        <svg
+          viewBox="0 0 512 512"
+          className="w-[500px] h-[500px] md:w-[600px] md:h-[600px] lg:w-[700px] lg:h-[700px] opacity-[0.06] translate-x-1/4"
+        >
+          <path
+            fill="currentColor"
+            className="text-bronze"
+            d="M287.7 18.92l-68.6 3.62 1.1 15.11.4-.1c5.8-1.24 11.3-1.89 16.4-2.05 15.4-.48 27.9 3.45 38.2 9 3.9 2.13 7.5 4.43 11 6.76zm-47.8 34.39c-.7 0-1.5 0-2.2.1-3.9.17-8.1.73-12.8 1.7-27.7 9.5-46.1 20.91-56.5 32.09-10.5 11.18-13.2 21.6-11.2 32 3.8 19.2 28.1 41.2 68.3 54.9v-33.3c-5-2.7-8.9-5.9-10.8-11.5-1.3-3.7-.9-7.8.2-10.9 1.1-3.2 2.8-5.7 4.8-8.4l4.5-6.1 6.8 3.5c48.1 24.4 81.6 30.6 108.3 19.5 12.8-5.3 16.4-10.3 16.8-11.9.3-1.6-.5-4.5-5.7-9-10.2-9.22-33.2-18.78-47.1-22.2l-1-.27-1-.52c-13.7-7.23-23.7-16.7-34.7-22.68-7.8-4.2-15.8-7.11-26.7-7.02zm49.8 37.19a7.916 7.878 0 0 1 7.9 7.88 7.916 7.878 0 0 1-7.9 7.92 7.916 7.878 0 0 1-7.9-7.92 7.916 7.878 0 0 1 7.9-7.88zm147.8 32.7c-12.3.3-24 3.5-33 8.4-10.5-1.4-21.4-4.2-32.7-7.7-2.7 5.6-7.6 10.2-14.6 14.3 13.9 4.6 28.1 8.7 42.4 10.9 2.7 12.8 8 25.5 17.7 37.1l13.8-11.6c-7.7-9.2-11.9-18.7-14-29 8.4-3.3 20.7-5.5 31.2-3.5l3.2-17.8c-4.7-.8-9.4-1.2-14-1.1zm-194 9.9v57.7c6.7-1.8 12.8-3.5 17.6-5 3.6-1.2 6.1-2.2 7.6-3l.3-40c-8.2-2.6-16.6-5.8-25.5-9.7zm43.4 25.8l-.2 27.4v-.3c.1 3.6-1.7 6.7-3.3 8.5-1.7 1.8-3.4 2.8-5.1 3.8-3.5 1.9-7.3 3.2-11.8 4.6-8.9 2.8-20.1 5.6-31.3 9-11.2 3.4-22.4 7.6-30.6 12.4-8.1 4.9-12.6 10-13.6 15.2-3.1 16.4-.1 25.6 7.5 34.2 5.2 6.1 13.6 11.7 24 17.2l-2.4-21.3 6.1-2.6c18.3-8.1 38.3-13.8 55.3-21.1 17.1-7.2 30.7-15.8 38.2-28.2 4.7-7.9 5.5-13.6 4.5-19-.9-5.3-4-10.7-9.1-16.4-7-7.8-17.5-15.5-28.2-23.4zm-17.1 110.9c-10.4 3.8-20.8 7.3-30.3 11.2l3.3 30.2h.1c9-2.9 17.4-5.4 22.9-7.6 2.3-1 3.7-1.8 4.6-2.4zm18.3 15.4l.3 18.2v.2c0 5.3-3.4 9.2-6.3 11.5-2.9 2.2-6 3.7-9.5 5.1-7 2.9-15.4 5.3-24.1 8.1-17.1 5.5-34 13.4-38.9 21.3-5.5 15.8-3.5 23.3 2 30 3.4 4.2 9 8 15.8 11.8l-2.2-18.7 7.3-2.1s19.9-5.9 40.2-15.8c10.2-5 20.4-10.9 27.9-17.3 7.6-6.3 12-12.8 12.8-18.1.4-2.5-.8-6.7-4-11.9-3.3-5.1-8.4-10.7-13.8-15.7-2.5-2.4-5.1-4.6-7.5-6.6zm-19.9 91.5c-9.9 4.2-17.8 6.9-23.1 8.6l.5 7 3.5 29.7-1.4-.7.1 1.2 1.2-.3c5.9-1.4 10.9-2.9 13.5-4.3 2.7-1.4 2.2-1.3 2.2-1.4l3.3-37.2zm16.6 17.6l-2.1 23.8c-.7 7.5-6.5 13-11.9 15.8-5.5 2.8-11.5 4.3-17.7 5.8-12.4 2.9-25.9 5.8-33.1 10.6-7.1 4.7-11.3 9.3-13.3 12.9-2 3.7-2.1 6.1-1.2 9.1 1.3 4 6.1 9.4 14.2 14.5-.1-4.4.4-8.5 2.2-12.6 1.9-4.3 5.8-7.8 9.8-9.7 4-1.9 8.2-2.8 13.2-3.7 11.1-1.9 27.9-5.5 41.6-12.2 13.7-6.7 23.2-15.4 24.7-28.1.2-2-.8-4.9-3.9-8.8-3-3.8-7.9-7.9-13-11.5-3.3-2.2-6.5-4.2-9.5-5.9zM266 474.8c-5.2 1.3-10 2.3-14.2 3.1l1 14.5 12.3.7z"
+          />
+        </svg>
+      </div>
+
+      {/* Main content */}
+      <div className="container-custom relative z-10 pt-32 pb-24">
+        {/* Two-column layout */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left content - spans 7 columns */}
+          <div className="lg:col-span-7 text-left">
+            {/* Badge - matches nav's typography style */}
+            <div className="inline-flex items-center gap-3 mb-10 animate-line animate-line-1">
+              <span className="w-8 h-px bg-bronze/60" />
+              <div className="flex items-center gap-2 text-off-white/70">
+                <FlaskConical size={14} className="text-bronze" />
+                <span className="font-body text-xs tracking-widest uppercase">
+                  Research-First Healthcare AI
+                </span>
+              </div>
             </div>
 
             {/* Headline */}
-            <h1 className="font-heading text-4xl md:text-hero text-off-white mb-6 animate-slide-up">
-              Advancing Healthcare Through AI Research
+            <h1 className="mb-8">
+              <span
+                className="block font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-off-white leading-[1.05] animate-line animate-line-1"
+                style={{ textShadow: '0 4px 30px rgba(0,0,0,0.4)' }}
+              >
+                Advancing Healthcare
+              </span>
+              <span
+                className="block font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-off-white leading-[1.05] mt-1 animate-line animate-line-2"
+                style={{ textShadow: '0 4px 30px rgba(0,0,0,0.4)' }}
+              >
+                Through AI Research
+              </span>
             </h1>
 
             {/* Subheadline */}
-            <p className="font-body text-lg md:text-large text-off-white/80 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
-              <span className="text-bronze">38 domain-specific reasoning engines</span> built for clinical decision-making—from differential diagnosis to treatment protocols.
+            <p className="font-body text-lg md:text-xl text-off-white/75 leading-relaxed max-w-xl mb-10 pl-5 border-l-2 border-bronze/40 animate-line animate-line-2">
+              <span className="text-bronze font-medium">38 domain-specific reasoning engines</span>{' '}
+              built for clinical decision-making—from differential diagnosis to treatment protocols.
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
-              <a href="/request-access" className="btn-primary inline-flex items-center justify-center gap-2 group">
+            {/* CTAs - matching nav's button style more closely */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 animate-line animate-line-3">
+              <a
+                href="/request-access"
+                className="inline-flex items-center justify-center gap-2 bg-off-white text-charcoal px-6 py-3 rounded-full font-body text-sm font-medium transition-all duration-300 hover:bg-bronze hover:text-off-white group"
+              >
                 Request Access
-                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5" />
               </a>
-              <a href="/research" className="btn-secondary !border-off-white/30 !text-off-white hover:!bg-off-white/10">
+              <a
+                href="/research"
+                className="inline-flex items-center gap-2 text-off-white/70 font-body text-sm font-medium transition-all duration-300 hover:text-bronze group"
+              >
                 Read Our Research
+                <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
               </a>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-16 pt-8 border-t border-off-white/10 animate-slide-up" style={{ animationDelay: '300ms' }}>
-              <div>
-                <div className="font-heading text-3xl md:text-4xl text-bronze">38</div>
-                <div className="font-body text-small text-off-white/60">Specialized Experts</div>
-              </div>
-              <div>
-                <div className="font-heading text-3xl md:text-4xl text-bronze">97.2%</div>
-                <div className="font-body text-small text-off-white/60">Diagnostic Accuracy</div>
-              </div>
-              <div>
-                <div className="font-heading text-3xl md:text-4xl text-bronze">4</div>
-                <div className="font-body text-small text-off-white/60">Reasoning Modes</div>
-              </div>
             </div>
           </div>
 
-          {/* Right column - empty */}
-          <div className="hidden md:block" />
+          {/* Video placeholder - Desktop (9:16 aspect ratio) */}
+          <div className="hidden lg:block lg:col-span-5">
+            <div className="relative aspect-[9/16] max-h-[650px] rounded-2xl overflow-hidden bg-gradient-to-br from-charcoal via-warm-stone to-charcoal border border-off-white/10 group cursor-pointer">
+              {/* Subtle bronze accent */}
+              <div className="absolute inset-0 bg-gradient-to-t from-bronze/20 via-transparent to-transparent" />
+
+              {/* Play button */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-off-white/10 border border-off-white/20 flex items-center justify-center backdrop-blur-sm transition-all duration-300 group-hover:bg-off-white/20 group-hover:scale-110">
+                  <Play size={24} className="text-off-white ml-1" fill="currentColor" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Video placeholder - Mobile (16:9 aspect ratio) */}
+        <div className="lg:hidden mt-12">
+          <div className="relative aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-charcoal via-warm-stone to-charcoal border border-off-white/10 group cursor-pointer">
+            {/* Subtle bronze accent */}
+            <div className="absolute inset-0 bg-gradient-to-t from-bronze/20 via-transparent to-transparent" />
+
+            {/* Play button */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-14 h-14 rounded-full bg-off-white/10 border border-off-white/20 flex items-center justify-center backdrop-blur-sm transition-all duration-300 group-hover:bg-off-white/20 group-hover:scale-110">
+                <Play size={20} className="text-off-white ml-1" fill="currentColor" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
