@@ -18,13 +18,6 @@ const validations = [
   },
 ]
 
-const metrics = [
-  { value: '97.2%', label: 'Diagnostic accuracy in controlled studies' },
-  { value: '38', label: 'Domain-specific reasoning engines' },
-  { value: '4', label: 'Distinct reasoning modes' },
-  { value: '10', label: 'Clinical documentation tools' },
-]
-
 export default function ClinicalValidation() {
   return (
     <section className="section-padding bg-subtle-gray">
@@ -61,22 +54,17 @@ export default function ClinicalValidation() {
             </div>
           </div>
 
-          {/* Metrics Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            {metrics.map((metric, index) => (
-              <div
-                key={metric.label}
-                className="card text-center animate-fade-in-up"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="font-heading text-3xl md:text-4xl text-bronze mb-2">
-                  {metric.value}
-                </div>
-                <div className="font-body text-small text-muted-gray">
-                  {metric.label}
-                </div>
-              </div>
-            ))}
+          {/* Image */}
+          <div className="relative">
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80"
+                alt="Medical professionals reviewing clinical data"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* Decorative accent */}
+            <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-bronze/10 rounded-2xl -z-10" />
           </div>
         </div>
 

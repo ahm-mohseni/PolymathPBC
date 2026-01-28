@@ -61,13 +61,13 @@ export default function Hero() {
                 className="block font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-off-white leading-[1.05] animate-line animate-line-1"
                 style={{ textShadow: '0 4px 30px rgba(0,0,0,0.4)' }}
               >
-                Advancing Healthcare
+                The AI for
               </span>
               <span
                 className="block font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-off-white leading-[1.05] mt-1 animate-line animate-line-2"
                 style={{ textShadow: '0 4px 30px rgba(0,0,0,0.4)' }}
               >
-                Through AI Research
+                Healthcare Professionals
               </span>
             </h1>
 

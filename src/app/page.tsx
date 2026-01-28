@@ -1,5 +1,6 @@
 import Navigation from '@/components/Navigation'
 import Hero from '@/components/Hero'
+import ProductShowcase from '@/components/ProductShowcase'
 import ResearchHighlights from '@/components/ResearchHighlights'
 import ClinicalValidation from '@/components/ClinicalValidation'
 import ExpertShowcase from '@/components/ExpertShowcase'
@@ -13,6 +14,7 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
+        <ProductShowcase />
         <ResearchHighlights />
         <ClinicalValidation />
         <ExpertShowcase />
